@@ -27,6 +27,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var bodyFatLabel: UILabel!
     @IBOutlet weak var finalTargetWeightLabel: UILabel!
     
+    @IBOutlet weak var BMILabel: UILabel!
+    @IBOutlet weak var PoundsToLoseLabel: UILabel!
+    
     var largeFrame = false
     var smallFrame = false
     var mediumFrame = false
@@ -92,48 +95,81 @@ class ViewController: UIViewController {
         
         if firstInteger == 5.0 {
             let fiveFoot = Float(106)
-            let baseWeight = (fiveFoot + secondInteger! * 6)
-        
-            idealBodyFat.text = "\(baseWeight)"
             
-            let totalInches = (firstInteger! * 12) + secondInteger!
+            //figuring base line weight(no fat)
+            let baseWeight = (fiveFoot + (secondInteger! * 6))
+            idealBodyFat.text = "Base line Weight(no fat) \(baseWeight)"
+            
             //total inches for feet and inches given
-            InchLabel.text = "Height-Inches:\(totalInches)"
+            let totalInches = (firstInteger! * 12) + secondInteger!
+            InchLabel.text = "Height-Inches: \(totalInches)"
+            
             //putting inches into Cm
             let totalCm = totalInches * 2.55
-            //putting it in a label
-            cmLabel.text = "Height-Cm:\(totalCm)"
+            //putting cm in a label
+            cmLabel.text = "Height-Cm: \(totalCm)"
             
-            idealBodyFat.text = "Base line Weight\(idealBodyFat)"
+            //add option for user input HERE?
+            let math1 = baseWeight * 704.7
+            let math2 = totalInches * totalInches
+            let BMI = math1 / math2
+            //formatt number so it is not that long.
+            let str = NSString(format: "%.1f", BMI)
+            BMILabel.text = "BMI: \(str)"
             
-            //give option for user input
-            let BMI = (baseWeight * 703) / (totalInches * 2)
+            //figure total pounds of fat
+            let poundsOfFat = thirdInteger! * BMI / 100
             
-            let poundsOfFat = thirdInteger! * BMI
-            bodyFatLabel.text = "Pounds of body fat \(poundsOfFat)"
+            let POF = NSString(format: "%.1f", poundsOfFat)
+            bodyFatLabel.text = "Total Pounds of fat: \(POF)"
             
-            let leanBodyMass = poundsOfFat - thirdInteger!
-            leanLabel.text = "Your lean Body Mass:\(leanBodyMass)"
+            let leanBodyMass = Double(thirdInteger! - poundsOfFat)
+            leanLabel.text = "Your lean Body Mass:\(Int(leanBodyMass))"
             
-            let goalbodyFat = 0.18
-            let bodyFatMath  = 1.00 - goalbodyFat
+            //ideal body fat is 18% later let user choice a range of % (0-30)
+            let bodyFatMath  = 1.00 - 0.18
             
-            let finalWeight = Float(leanBodyMass) / Float(bodyFatMath)
-            finalTargetWeightLabel.text = "Your Best cycling Weight: \(finalWeight)"
+            let finalWeight = Double(leanBodyMass) / Double(bodyFatMath)
+        // final female weight
+        let femaleWeight = finalWeight / 10
+        let addFemaleWeight = finalWeight + femaleWeight
+            
+           // let strFinal = NSString(format: "%.0f", (finalWeight))
+            finalTargetWeightLabel.text = "Your Best cycling Weight: \(Int(finalWeight))"
             
             
             //must intergrate this method
             if largeFrame == true {
-                let largeFrame = Float(finalWeight + (finalWeight * 0.10))
-                 targetWeightLabel.text = "Target Weight: \(largeFrame)"
+                if male == true {
+                 let strFinalL = NSString(format: "%.0f", finalWeight + (finalWeight / 0.10))
+                 targetWeightLabel.text = "Target Weight Male: \(strFinalL)"
+                }
+                if female == true {
+                    let strFinalL = NSString(format: "%.0f", (addFemaleWeight / 0.10) + addFemaleWeight)
+                    targetWeightLabel.text = "Target Weight: Female: \(strFinalL)"
+                }
             }
             if mediumFrame == true {
-                targetWeightLabel.text = "Target Weight: \(finalWeight)"
-                
+                if male == true && female == false {
+                let strFinalM = NSString(format: "%.1f", finalWeight)
+                targetWeightLabel.text = "Target Weight Male: \(strFinalM)"
             }
+                if female == true && male == false {
+             //female
+                    let strFinalM = NSString(format: "%.1f", (addFemaleWeight / 0.10) + addFemaleWeight)
+                    targetWeightLabel.text = "Target Weight Female: \(strFinalM)"
+            }
+        }
             if smallFrame == true {
-                let smallFrame = finalWeight - (finalWeight / 0.10)
-                targetWeightLabel.text = "Target Weight:\(smallFrame)"
+                if male == true {
+                 let strFinalS = NSString(format: "%.1f", finalWeight - (finalWeight / 0.10))
+                targetWeightLabel.text = "Target Weight:\(strFinalS)"
+                }
+                if female == true {
+                    //female
+                    let strFinalS = NSString(format: "%.0f", (addFemaleWeight / 0.10) - addFemaleWeight)
+                    targetWeightLabel.text = "Target Weight:\(strFinalS)"
+                }
             }
         }
     }

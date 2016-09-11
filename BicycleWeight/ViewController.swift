@@ -107,7 +107,7 @@ class ViewController: UIViewController {
             idealBodyFat.text = "Base line Weight\(idealBodyFat)"
             
             //give option for user input
-            let BMI = (baseWeight * 703) / (totalInches)
+            let BMI = (baseWeight * 703) / (totalInches * 2)
             
             let poundsOfFat = thirdInteger! * BMI
             bodyFatLabel.text = "Pounds of body fat \(poundsOfFat)"

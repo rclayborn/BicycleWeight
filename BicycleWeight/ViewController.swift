@@ -130,13 +130,19 @@ class ViewController: UIViewController {
             let bodyFatMath  = 1.00 - 0.18
             
             let finalWeight = Double(leanBodyMass) / Double(bodyFatMath)
-        // final female weight
-        let femaleWeight = finalWeight / 10
-        let addFemaleWeight = finalWeight + femaleWeight
+        
+            // final female weight
+            let femaleWeight = finalWeight / 10
+            let addFemaleWeight = finalWeight + femaleWeight
             
-           // let strFinal = NSString(format: "%.0f", (finalWeight))
-            finalTargetWeightLabel.text = "Your Best cycling Weight: \(Int(finalWeight))"
             
+            
+            // let strFinal = NSString(format: "%.0f", (finalWeight))
+            finalTargetWeightLabel.text = "Your Best cycling Weight Male: \(Int(finalWeight))"
+            
+            //pounds to lose
+            let poundsToLose = Int(thirdInteger!) - Int(finalWeight)
+            PoundsToLoseLabel.text = "pound needed to lose: \(poundsToLose)"
             
             //must intergrate this method
             if largeFrame == true {
